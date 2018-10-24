@@ -38,6 +38,9 @@ class WebToken {
         }
 
         $data = json_decode(base64_decode($array[1]), true);
-        return ['code'=> 0, 'message'=> '解密成功', 'data'=> $data['data'], 'exp'=> $data['exp']];
+        if (time() > $data['exp']) {
+            return ['code'=> 10002, 'message'=> '令牌过期', 'data'=> []];
+        }
+        return ['code'=> 0, 'message'=> '解密成功', 'data'=> $data['data']];
     }
 }
